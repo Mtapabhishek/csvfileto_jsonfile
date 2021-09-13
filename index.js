@@ -1,5 +1,4 @@
 const fs = require("fs");
-//const program  =require('commander');
 
 let csv = [
   "Ball_by_Ball.csv",
@@ -32,18 +31,19 @@ function converttojson(csv) {
   }
   return csvarray;
 }
-var myarray=["Ball_by_Ball.json",
-"Match.json",
-"Player_Match.json",
-"Player.json",
-"Season.json",
-"Team.json",]
+var myarray = [
+  "Ball_by_Ball.json",
+  "Match.json",
+  "Player_Match.json",
+  "Player.json",
+  "Season.json",
+  "Team.json",
+];
 
-for(let i=0;i<myarray.length;i++){
-JSON.parse(fs.readFileSync(myarray[i], "utf8")).forEach((x)=> {
-  if(x.Player_Id==="84"){
-    console.log(x); 
-  }
-})  
+for (let i = 0; i < myarray.length; i++) {
+  JSON.parse(fs.readFileSync(myarray[i], "utf8")).forEach((x) => {
+    if (x.Player_Id === "84") {
+      console.log(x);
+    }
+  });
 }
-
