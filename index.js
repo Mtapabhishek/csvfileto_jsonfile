@@ -8,15 +8,51 @@ let csv = [
   "Season.csv",
   "Team.csv",
 ];
+let stored;
 for (let i = 0; i < csv.length; i++) {
-  let stored = fs.readFileSync(csv[i], "utf8");
+  stored = fs.readFileSync(csv[i], "utf8");
+
   let output = converttojson(stored);
   let json1 = JSON.stringify(output);
   fs.writeFileSync(csv[i].replace("csv", "json"), json1);
 }
+let result = [];
+JSON.parse(fs.readFileSync("Ball_by_Ball.json", "utf8")).forEach((x) => {
+  let obj = { ...x };
+  JSON.parse(fs.readFileSync("Match.json", "utf8")).forEach((t) => {
+    if (t.Match_Id === obj.Match_Id) {
+      obj = { ...obj, ...t };
+      //return
+    }
+  });
+  JSON.parse(fs.readFileSync("Player_Match.json", "utf8")).forEach((t) => {
+    if (t.Match_Id === obj.Match_Id) {
+      obj = { ...obj, ...t };
+      //  return
+    }
+    //console.log(obj)
+  });
+  JSON.parse(fs.readFileSync("Player.json", "utf8")).forEach((t) => {
+    if (t.Player_Id.trim() == obj.Player_Id.trim()) {
+      obj = { ...obj, ...t };
+      // return
+    }
+  });
+  JSON.parse(fs.readFileSync("Team.json", "utf8")).forEach((t) => {
+    if (t.Team_Id.trim() == obj.Team_Id.trim()) {
+      obj = { ...obj, ...t };
+      obj.Team_Name = t.Team_Name;
+      // return;
+    }
+  });
+  console.log(obj);
+  // result.push(obj);
+  return;
+});
+// console.log(result)
 
 function converttojson(csv) {
-  var array = csv.toString().split("\r"); //
+  var array = csv.toString().split("\r"); 
   let headers = array[0].split(", ");
   headers = headers[0].split(",");
   let csvarray = [];
@@ -31,20 +67,3 @@ function converttojson(csv) {
   }
   return csvarray;
 }
-var myarray=["Ball_by_Ball.json",
-"Match.json",
-"Player_Match.json",
-"Player.json",
-"Season.json",
-"Team.json"]
-let resultss=[];
- for(let i=0;i<myarray.length;i++){
-JSON.parse(fs.readFileSync(myarray[i], "utf8")).map((x)=> resultss.push(x)) 
-console.log(resultss)
-}
-
-
-
-
-
-
